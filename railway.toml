@@ -1,5 +1,7 @@
 [build]
   builder = "nodejs"
+  root = "practica03next"
 
 [deploy]
   start = "npm run start"
+  root = "practica03next"
