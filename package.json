@@ -1,0 +1,16 @@
+{
+  "name": "practica03-webav",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start:frontend": "cd practica03next && npm run dev",
+    "start:backend": "cd backend && node index.js",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "dependencies": {
+    "practica03-webav": "file:"
+  }
+}
