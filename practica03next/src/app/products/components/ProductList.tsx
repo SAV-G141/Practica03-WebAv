@@ -23,13 +23,14 @@ export default function ProductList({ products, onEdit, onDelete }: ProductListP
       {products.map((product) => (
         <div key={product.id} className="border border-gray-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
           <img
-            src={product.image_url}
+            src={product.image_url && product.image_url.startsWith('http') ? product.image_url : 'https://via.placeholder.com/150'}
             alt={product.name}
             className="w-full h-40 object-cover rounded-md mb-3"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://via.placeholder.com/150'; }}
           />
           <h3 className="text-lg font-semibold text-gray-800">{product.name}</h3>
           <p className="text-gray-600 mb-2">{product.description}</p>
-          <p className="font-medium text-gray-700 mb-1">Precio: ${product.price.toFixed(2)}</p>
+          <p className="font-medium text-gray-700 mb-1">Precio: ${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}</p>
           <p className="font-medium text-gray-700 mb-3">Stock: {product.stock}</p>
           <div className="flex justify-between">
             <button

@@ -18,8 +18,8 @@ interface ProductFormProps {
 export default function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
   const [name, setName] = useState(product?.name || "");
   const [description, setDescription] = useState(product?.description || "");
-  const [price, setPrice] = useState(product?.price || 0);
-  const [stock, setStock] = useState(product?.stock || 0);
+  const [price, setPrice] = useState(product?.price ?? 0);
+  const [stock, setStock] = useState(product?.stock ?? 0);
   const [imageUrl, setImageUrl] = useState(product?.image_url || "");
 
   useEffect(() => {
