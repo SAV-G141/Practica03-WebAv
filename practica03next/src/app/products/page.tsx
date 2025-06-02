@@ -17,12 +17,28 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [useExternalApi, setUseExternalApi] = useState(false);
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:3001/products");
-      const data = await res.json();
-      setProducts(data);
+      if (useExternalApi) {
+        const res = await fetch("https://fakestoreapi.com/products");
+        const data = await res.json();
+        // Adaptar datos externos al formato Product esperado
+        const adaptedData = data.map((item: { id: number; title: string; description: string; price: number; image: string; }) => ({
+          id: item.id,
+          name: item.title,
+          description: item.description,
+          price: item.price,
+          stock: 10, // FakeStoreAPI no tiene stock, asignamos un valor por defecto
+          image_url: item.image,
+        }));
+        setProducts(adaptedData);
+      } else {
+        const res = await fetch("http://localhost:3001/products");
+        const data = await res.json();
+        setProducts(data);
+      }
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -30,7 +46,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [useExternalApi]);
 
   const handleEdit = (product: Product) => {
     setEditingProduct(product);
@@ -87,7 +103,21 @@ export default function ProductsPage() {
     <div className="min-h-screen bg-gray-900 text-gray-100 font-sans">
       <div className="max-w-7xl mx-auto p-8">
         <h1 className="text-5xl font-extrabold text-center mb-12 text-indigo-400">Gestión de Productos</h1>
-        {!showForm && (
+        <div className="flex justify-center mb-8 space-x-4">
+          <button
+            onClick={() => setUseExternalApi(false)}
+            className={`px-6 py-2 rounded-lg shadow-lg transition-colors ${!useExternalApi ? 'bg-indigo-600 text-white' : 'bg-gray-700 text-gray-300'}`}
+          >
+            Productos Locales
+          </button>
+          <button
+            onClick={() => setUseExternalApi(true)}
+            className={`px-6 py-2 rounded-lg shadow-lg transition-colors ${useExternalApi ? 'bg-indigo-600 text-white' : 'bg-gray-700 text-gray-300'}`}
+          >
+            Productos Externos
+          </button>
+        </div>
+        {!showForm && !useExternalApi && (
           <div className="flex justify-center mb-8">
             <button
               onClick={() => setShowForm(true)}
@@ -97,7 +127,7 @@ export default function ProductsPage() {
             </button>
           </div>
         )}
-        {showForm && (
+        {showForm && !useExternalApi && (
           <div className="max-w-3xl mx-auto mb-8">
             <ProductForm
               product={editingProduct}
