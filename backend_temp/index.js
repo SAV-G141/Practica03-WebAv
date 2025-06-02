@@ -1,10 +1,13 @@
 const express = require('express');
-const express = require('express');
+const cors = require('cors');
 const mysql = require('mysql2/promise');
 const app = express();
 const port = 3001;
 
 // Middleware to parse JSON bodies
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 app.use(express.json());
 
 // MySQL pool setup with generic config (modify as needed)

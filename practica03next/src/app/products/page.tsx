@@ -84,28 +84,34 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-gray-50 min-h-screen font-sans">
-      <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">Gestión de Productos</h1>
-      {!showForm && (
-        <button
-          onClick={() => setShowForm(true)}
-          className="mb-6 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors"
-        >
-          Nuevo Producto
-        </button>
-      )}
-      {showForm && (
-        <ProductForm
-          product={editingProduct}
-          onCancel={handleFormClose}
-          onSubmit={handleFormSubmit}
+    <div className="min-h-screen bg-gray-900 text-gray-100 font-sans">
+      <div className="max-w-7xl mx-auto p-8">
+        <h1 className="text-5xl font-extrabold text-center mb-12 text-indigo-400">Gestión de Productos</h1>
+        {!showForm && (
+          <div className="flex justify-center mb-8">
+            <button
+              onClick={() => setShowForm(true)}
+              className="px-8 py-3 bg-indigo-600 text-white rounded-lg shadow-lg hover:bg-indigo-700 transition-colors"
+            >
+              Nuevo Producto
+            </button>
+          </div>
+        )}
+        {showForm && (
+          <div className="max-w-3xl mx-auto mb-8">
+            <ProductForm
+              product={editingProduct}
+              onCancel={handleFormClose}
+              onSubmit={handleFormSubmit}
+            />
+          </div>
+        )}
+        <ProductList
+          products={products}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
         />
-      )}
-      <ProductList
-        products={products}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      </div>
     </div>
   );
 }
