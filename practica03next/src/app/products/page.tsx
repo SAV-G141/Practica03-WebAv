@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import ProductList from "./components/ProductList";
 import ProductForm from "./components/ProductForm";
+import Cart from "./components/Cart";
 
 interface Product {
   id: number;
@@ -18,6 +19,7 @@ export default function ProductsPage() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [useExternalApi, setUseExternalApi] = useState(false);
+  const [cartItems, setCartItems] = useState<Product[]>([]);
 
   const fetchProducts = async () => {
     try {
@@ -70,7 +72,7 @@ export default function ProductsPage() {
     setShowForm(false);
   };
 
-  const handleFormSubmit = async (product: Omit<Product, "id">, id?: number) => {
+  const handleFormSubmit = async (product: Omit<Product | null, "id">, id?: number) => {
     try {
       if (id) {
         // Update
@@ -97,6 +99,19 @@ export default function ProductsPage() {
     } catch (error) {
       console.error("Error saving product:", error);
     }
+  };
+
+  const handleAddToCart = (product: Product) => {
+    setCartItems((prevItems) => {
+      if (prevItems.find((item) => item.id === product.id)) {
+        return prevItems;
+      }
+      return [...prevItems, product];
+    });
+  };
+
+  const handleRemoveFromCart = (id: number) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
   return (
@@ -140,8 +155,10 @@ export default function ProductsPage() {
           products={products}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onAddToCart={handleAddToCart}
         />
       </div>
+      <Cart cartItems={cartItems} onRemove={handleRemoveFromCart} />
     </div>
   );
 }
