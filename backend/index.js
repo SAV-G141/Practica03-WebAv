@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
 const app = express();
-const port = 3001;
+const port = 3306;
 
 // Middleware to parse JSON bodies
 app.use(cors({
