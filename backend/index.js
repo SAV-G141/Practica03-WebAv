@@ -12,10 +12,10 @@ app.use(express.json());
 
 // MySQL pool setup with generic config (modify as needed)
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'practica03db',
+  host: process.env.DB_HOST || 'mysql.railway.internal',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'RehMomrjtkyHvfuPyGqFiKTkDVZtsYXF',
+  database: process.env.DB_NAME || 'railway',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
